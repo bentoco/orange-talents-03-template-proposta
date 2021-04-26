@@ -15,20 +15,28 @@ public class ProposalRegistrationController {
 
     @Autowired
     private final ProposalRepository repository;
+    private final ProposalAnalysis proposalAnalysis;
 
-    public ProposalRegistrationController ( ProposalRepository repository ) {
+    public ProposalRegistrationController (
+            ProposalRepository repository ,
+            ProposalAnalysis proposalAnalysis ) {
         this.repository = repository;
+        this.proposalAnalysis = proposalAnalysis;
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<?> registerProposal (
             @Valid @RequestBody ProposalRequest request ,
-            UriComponentsBuilder builder ) {
+            UriComponentsBuilder builder ) throws Exception {
 
         boolean hasProposal = repository.existsByDocument(request.getDocument());
         if (!hasProposal) {
             Proposal proposal = request.toProposal();
+            repository.save(proposal);
+
+            ProposalAnalysisResult result = proposalAnalysis.financialEvaluantion(proposal , repository);
+            proposal.setStatus(result.getResultadoSolicitacao());
             repository.save(proposal);
 
             URI uri = builder.path("/api/proposal/{id}").buildAndExpand(proposal.getId()).toUri();

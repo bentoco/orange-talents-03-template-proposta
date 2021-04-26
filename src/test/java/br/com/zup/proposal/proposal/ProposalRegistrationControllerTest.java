@@ -37,9 +37,7 @@ class ProposalRegistrationControllerTest {
     @Transactional
     @DisplayName ( " must register new proposal " )
     public void test1 () throws Exception {
-        var
-                proposalRequest =
-                new ProposalRequest("43414120860" , "Foo Bar" , "foo@bar.com" , "Stree foo, 123" , BigDecimal.valueOf(2000d));
+        var proposalRequest = new ProposalRequest("43414120860" , "Foo Bar" , "foo@bar.com" , "Stree foo, 123" , BigDecimal.valueOf(2000d));
         var request = mapper.writeValueAsString(proposalRequest);
 
         var proposalResponse = new ProposalRegistrationController.ProposalResponse(proposalRequest.toProposal());
