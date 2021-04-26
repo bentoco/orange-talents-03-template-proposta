@@ -17,7 +17,7 @@ public class ProposalAnalysis {
 
     private final Logger logger = LoggerFactory.getLogger(ProposalRegistrationController.class);
 
-    public ProposalAnalysisResult financialEvaluantion ( Proposal proposal , ProposalRepository repository ) throws Exception {
+    public ProposalAnalysisResult financialEvaluantion ( Proposal proposal ) throws Exception {
         try {
             ProposalAnalysisRequest
                     analysisRequest =

@@ -1,6 +1,7 @@
 package br.com.zup.proposal.proposal;
 
-enum ProposalState {
+public enum ProposalState {
+
     NAO_ELEGIVEL,
-    ELEGIVEL
+    ELEGIVEL;
 }

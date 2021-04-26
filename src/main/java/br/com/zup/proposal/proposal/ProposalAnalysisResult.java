@@ -42,4 +42,5 @@ class ProposalAnalysisResult {
     public String getIdProposta () {
         return idProposta;
     }
+
 }
