@@ -16,7 +16,7 @@ class ProposalAnalysisResult {
     @NotBlank
     String idProposta;
 
-    public ProposaNAO_ELEGIVELlAnalysisResult (
+    public ProposalAnalysisResult (
             @NotBlank String documento ,
             @NotBlank String nome ,
             @NotBlank String resultadoSolicitacao ,
