@@ -53,7 +53,6 @@ class ProposalRegistrationControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location" , String.valueOf(location)))
                 .andExpect(content().json(response));
-
     }
 
     @Test

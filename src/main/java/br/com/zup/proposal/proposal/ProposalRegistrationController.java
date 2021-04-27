@@ -33,6 +33,8 @@ public class ProposalRegistrationController {
         boolean hasProposal = repository.existsByDocument(request.getDocument());
         if (!hasProposal) {
             Proposal proposal = request.toProposal();
+            repository.save(proposal);
+
             ProposalAnalysisResult result = proposalAnalysis.financialEvaluantion(proposal);
             proposal.setStatus(result.getResultadoSolicitacao());
             repository.save(proposal);
