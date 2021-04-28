@@ -1,11 +1,6 @@
-FROM mysql:latest
-LABEL maintainer="Gabriel Bento"
-
-ENV MYSQL_ROOT_PASSWORD=${MY_ROOT_PASSWORD}
-ENV MYSQL_DATABASE=${MYSQL_DATABASE}
-ENV MYSQL_USER=${MYSQL_USER}
-ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
-
-EXPOSE 3306
-
-VOLUME /opt/mysql_proposal /var/lib/mysql
+FROM openjdk:11.0.11-jdk
+MAINTAINER = "Gabriel Bento"
+EXPOSE 8080
+ARG JAR_FILE=/target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]

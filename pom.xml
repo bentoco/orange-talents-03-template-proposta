@@ -73,6 +73,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>proposal-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -80,5 +81,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

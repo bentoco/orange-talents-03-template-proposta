@@ -44,7 +44,7 @@ public class ProposalRegistrationController {
             repository.save(proposal);
 
             URI uri = builder.path("/api/proposal/{id}").buildAndExpand(proposal.getId()).toUri();
-            return ResponseEntity.created(uri).body(new ProposalResponse(proposal));
+            return ResponseEntity.created(uri).body(new ProposalCreated(proposal));
         }
         return ResponseEntity.unprocessableEntity().build();
     }
@@ -61,9 +61,33 @@ public class ProposalRegistrationController {
     }
 }
 
-class ProposalResponse {
+class ProposalCreated {
 
     private Long proposalId;
+
+    private String message = "proposal successful stored";
+
+    public ProposalCreated ( Proposal proposal ) {
+        this.proposalId = proposal.getId();
+        this.message = message;
+    }
+
+    public Long getProposalId () {
+        return proposalId;
+    }
+
+    public String getMessage () {
+        return message;
+    }
+
+    public void setProposalId ( Long proposalId ) {
+        this.proposalId = proposalId;
+    }
+}
+
+class ProposalResponse {
+
+    private final Long proposalId;
     private final String document;
     private final String name;
     private final String email;
@@ -113,9 +137,5 @@ class ProposalResponse {
 
     public String getCardNumber () {
         return cardNumber;
-    }
-
-    public void setProposalId ( Long proposalId ) {
-        this.proposalId = proposalId;
     }
 }
