@@ -1,5 +1,7 @@
 package br.com.zup.proposal.proposal;
 
+import br.com.zup.proposal.proposal.resources.analysis.AnalysisResource;
+import br.com.zup.proposal.proposal.resources.analysis.AnalysisResourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +17,13 @@ public class ProposalRegistrationController {
 
     @Autowired
     private final ProposalRepository repository;
-    private final ProposalAnalysis proposalAnalysis;
+    private final AnalysisResource analysisResource;
 
     public ProposalRegistrationController (
             ProposalRepository repository ,
-            ProposalAnalysis proposalAnalysis ) {
+            AnalysisResource analysisResource ) {
         this.repository = repository;
-        this.proposalAnalysis = proposalAnalysis;
+        this.analysisResource = analysisResource;
     }
 
     @PostMapping
@@ -35,7 +37,7 @@ public class ProposalRegistrationController {
             Proposal proposal = request.toProposal();
             repository.save(proposal);
 
-            ProposalAnalysisResult result = proposalAnalysis.financialEvaluantion(proposal);
+            AnalysisResourceResult result = analysisResource.financialEvaluantion(proposal);
             proposal.setStatus(result.getResultadoSolicitacao());
             repository.save(proposal);
 
@@ -44,28 +46,28 @@ public class ProposalRegistrationController {
         }
         return ResponseEntity.unprocessableEntity().build();
     }
+}
 
-    public static class ProposalResponse {
+class ProposalResponse {
 
-        private Long proposalId;
+    private Long proposalId;
 
-        private String message = "proposal successful stored";
+    private String message = "proposal successful stored";
 
-        public ProposalResponse ( Proposal proposal ) {
-            this.proposalId = proposal.getId();
-            this.message = message;
-        }
+    public ProposalResponse ( Proposal proposal ) {
+        this.proposalId = proposal.getId();
+        this.message = message;
+    }
 
-        public Long getProposalId () {
-            return proposalId;
-        }
+    public Long getProposalId () {
+        return proposalId;
+    }
 
-        public String getMessage () {
-            return message;
-        }
+    public String getMessage () {
+        return message;
+    }
 
-        public void setProposalId ( Long proposalId ) {
-            this.proposalId = proposalId;
-        }
+    public void setProposalId ( Long proposalId ) {
+        this.proposalId = proposalId;
     }
 }

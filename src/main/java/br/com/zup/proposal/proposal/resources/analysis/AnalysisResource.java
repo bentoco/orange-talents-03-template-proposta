@@ -1,29 +1,31 @@
-package br.com.zup.proposal.proposal;
+package br.com.zup.proposal.proposal.resources.analysis;
 
+import br.com.zup.proposal.proposal.*;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProposalAnalysis {
+public class AnalysisResource {
 
     @Autowired
-    private final ProposalStateFeign feign;
+    private final AnalysisResourceFeign feign;
 
-    public ProposalAnalysis ( ProposalStateFeign feign ) {
+    public AnalysisResource ( AnalysisResourceFeign feign ) {
         this.feign = feign;
     }
 
     private final Logger logger = LoggerFactory.getLogger(ProposalRegistrationController.class);
 
-    public ProposalAnalysisResult financialEvaluantion ( Proposal proposal ) throws Exception {
+    public AnalysisResourceResult financialEvaluantion ( Proposal proposal ) throws Exception {
         try {
-            ProposalAnalysisRequest
+            AnalysisResourceRequest
                     analysisRequest =
-                    new ProposalAnalysisRequest(proposal.getDocument() , proposal.getName() , proposal.getId().toString());
+                    new AnalysisResourceRequest(proposal.getDocument() , proposal.getName() , proposal.getId().toString());
                     return feign.proposalAnalysis(analysisRequest).getBody();
-        } catch (Exception e) {
+        } catch (FeignException e) {
             logger.error("something wrong has happened " , e);
         }
         return null;

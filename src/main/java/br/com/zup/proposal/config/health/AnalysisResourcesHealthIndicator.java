@@ -1,6 +1,5 @@
 package br.com.zup.proposal.config.health;
 
-import br.com.zup.proposal.proposal.ProposalRegistrationController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.Health;

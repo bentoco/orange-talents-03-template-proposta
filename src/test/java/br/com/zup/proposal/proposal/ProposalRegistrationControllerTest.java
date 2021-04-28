@@ -40,7 +40,7 @@ class ProposalRegistrationControllerTest {
         var proposalRequest = new ProposalRequest("43414120860" , "Foo Bar" , "foo@bar.com" , "Stree foo, 123" , BigDecimal.valueOf(2000d));
         var request = mapper.writeValueAsString(proposalRequest);
 
-        var proposalResponse = new ProposalRegistrationController.ProposalResponse(proposalRequest.toProposal());
+        var proposalResponse = new ProposalResponse(proposalRequest.toProposal());
         proposalResponse.setProposalId(1L);
         var response = mapper.writeValueAsString(proposalResponse);
 

@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.group;
+package br.com.zup.proposal.proposal.groups;
 
 import br.com.zup.proposal.proposal.ProposalRequest;
 import org.hibernate.validator.spi.group.DefaultGroupSequenceProvider;

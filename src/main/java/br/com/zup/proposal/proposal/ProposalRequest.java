@@ -1,9 +1,8 @@
 package br.com.zup.proposal.proposal;
 
-import br.com.zup.proposal.proposal.group.LegalPerson;
-import br.com.zup.proposal.proposal.group.NaturalPerson;
-import br.com.zup.proposal.proposal.group.PersonType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.zup.proposal.proposal.groups.LegalPerson;
+import br.com.zup.proposal.proposal.groups.NaturalPerson;
+import br.com.zup.proposal.proposal.groups.PersonType;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
