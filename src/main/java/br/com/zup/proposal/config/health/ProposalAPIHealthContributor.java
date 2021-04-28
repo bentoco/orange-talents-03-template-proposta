@@ -16,9 +16,12 @@ public class ProposalAPIHealthContributor implements CompositeHealthContributor 
     private final Map<String, HealthContributor> contributors = new LinkedHashMap<>();
 
     @Autowired
-    public ProposalAPIHealthContributor ( AnalysisResourcesHealthIndicator analysisResourcesHealthIndicator, DataSourceHealthIndicator dataSourceHealthIndicator ) {
+    public ProposalAPIHealthContributor ( AnalysisResourcesHealthIndicator analysisResourcesHealthIndicator,
+                                          DataSourceHealthIndicator dataSourceHealthIndicator,
+                                          CardResourcesHealthIndicator cardResourcesHealthIndicator) {
         contributors.put("financialEvaluation" , analysisResourcesHealthIndicator);
         contributors.put("database", dataSourceHealthIndicator);
+        contributors.put("cardResource" , cardResourcesHealthIndicator);
     }
 
     @Override public HealthContributor getContributor ( String name ) {

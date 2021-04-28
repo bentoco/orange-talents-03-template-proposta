@@ -9,7 +9,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping ( "/api/proposal" )
@@ -46,25 +48,71 @@ public class ProposalRegistrationController {
         }
         return ResponseEntity.unprocessableEntity().build();
     }
+
+    @GetMapping ( "/{id}" )
+    public ResponseEntity<?> readProposal ( @PathVariable Long id ) {
+        Optional<Proposal> maybeProposal = repository.findById(id);
+        Optional<ResponseEntity<Proposal>> responseEntity = maybeProposal.map(ResponseEntity::ok);
+        return responseEntity.orElseGet(() -> ResponseEntity.notFound().build());
+//        if(maybeProposal.isPresent()){
+//            return ResponseEntity.ok(new ProposalResponse(maybeProposal.get()));
+//        }
+//        return ResponseEntity.notFound().build();
+    }
 }
 
 class ProposalResponse {
 
     private Long proposalId;
+    private final String document;
+    private final String name;
+    private final String email;
+    private final String address;
+    private final BigDecimal salary;
+    private final String status;
+    private final String cardNumber;
 
-    private String message = "proposal successful stored";
-
-    public ProposalResponse ( Proposal proposal ) {
+    ProposalResponse ( Proposal proposal ) {
         this.proposalId = proposal.getId();
-        this.message = message;
+        this.document = proposal.getDocument();
+        this.name = proposal.getName();
+        this.email = proposal.getEmail();
+        this.address = proposal.getAddress();
+        this.salary = proposal.getSalary();
+        this.status = proposal.getStatus().toString();
+        this.cardNumber = proposal.getCardNumber();
     }
 
     public Long getProposalId () {
         return proposalId;
     }
 
-    public String getMessage () {
-        return message;
+    public String getDocument () {
+        return document;
+    }
+
+    public String getName () {
+        return name;
+    }
+
+    public String getEmail () {
+        return email;
+    }
+
+    public String getAddress () {
+        return address;
+    }
+
+    public BigDecimal getSalary () {
+        return salary;
+    }
+
+    public String getStatus () {
+        return status;
+    }
+
+    public String getCardNumber () {
+        return cardNumber;
     }
 
     public void setProposalId ( Long proposalId ) {
