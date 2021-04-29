@@ -1,5 +1,6 @@
 package br.com.zup.proposal.proposal;
 
+import br.com.zup.proposal.card.Card;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -34,8 +35,9 @@ public class Proposal {
     @Enumerated ( EnumType.STRING )
     private ProposalState status;
 
-    @Column ( name = "card_number", unique = true )
-    private String cardNumber;
+    @OneToOne ( cascade = CascadeType.ALL )
+    @JoinColumn ( name = "card_id", unique = true )
+    private Card card;
 
     @Deprecated
     public Proposal () {
@@ -77,8 +79,8 @@ public class Proposal {
         return status;
     }
 
-    public String getCardNumber () {
-        return cardNumber;
+    public Card getCard () {
+        return card;
     }
 
     public void setStatus ( String status ) {
@@ -87,7 +89,7 @@ public class Proposal {
         if (status.equals("SEM_RESTRICAO")) this.status = ProposalState.ELEGIVEL;
     }
 
-    public void setCardNumber ( String cardNumber ) {
-        this.cardNumber = cardNumber;
+    public void setCard ( Card card ) {
+        this.card = card;
     }
 }

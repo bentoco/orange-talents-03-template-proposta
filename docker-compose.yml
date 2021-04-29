@@ -52,7 +52,7 @@ services:
       - transacoes
       - postgres
       - mysql
-      - proposal
+#      - proposal
     environment:
       DB_VENDOR: postgres
       DB_ADDR: postgres
@@ -138,27 +138,27 @@ services:
       
   mysql:
     image: 'bentoco/mysql:proposal'
-    ports: 
+    ports:
       - 3306:3306
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD: proposal
       MYSQL_DATABASE: proposal
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
-
-  proposal:
-    build: ./
-    image: 'bentoco/proposal'
-    ports:
-      - 8080:8080
-    depends_on:
-      - mysql
-    environment:
-      PROPOSAL_DB_URL: jdbc:mysql://mysql:3306/proposal?allowPublicKeyRetrieval=true&useSSL=false
-      PROPOSAL_DB_USERNAME: admin
-      PROPOSAL_DB_PASSWORD: admin
-      HOST_ANALYSIS_RESOURCES: http://analise:9999/api/solicitacao
-      HOST_CARD_RESOURCES: http://contas:8888/api/cartoes
+#
+#  proposal:
+#    build: ./
+#    image: 'bentoco/proposal'
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - mysql
+#    environment:
+#      PROPOSAL_DB_URL: jdbc:mysql://mysql:3306/proposal?allowPublicKeyRetrieval=true&useSSL=false
+#      PROPOSAL_DB_USERNAME: admin
+#      PROPOSAL_DB_PASSWORD: admin
+#      HOST_ANALYSIS_RESOURCES: http://analise:9999/api/solicitacao
+#      HOST_CARD_RESOURCES: http://contas:8888/api/cartoes
 
 volumes:
   grafana-volume:

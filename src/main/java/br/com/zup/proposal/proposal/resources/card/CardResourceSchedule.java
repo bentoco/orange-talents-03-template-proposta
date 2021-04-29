@@ -1,17 +1,15 @@
 package br.com.zup.proposal.proposal.resources.card;
 
+import br.com.zup.proposal.card.Card;
 import br.com.zup.proposal.proposal.Proposal;
 import br.com.zup.proposal.proposal.ProposalRepository;
 import br.com.zup.proposal.proposal.ProposalState;
-import br.com.zup.proposal.proposal.resources.analysis.AnalysisResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CardResourceSchedule {
@@ -27,18 +25,18 @@ public class CardResourceSchedule {
         this.feign = feign;
     }
 
-    @Scheduled ( fixedDelay = 900000 ) // 15 min
+    @Scheduled ( fixedDelay = 5000 ) // 15 min
     @Transactional
     public void associateCardToProposal () {
-        List<Proposal> hasAvailables = repository.findAllByCardNumberIsNullAndStatusEquals(ProposalState.ELEGIVEL);
+        List<Proposal> hasAvailables = repository.findAllByCardIdIsNullAndStatusEquals(ProposalState.ELEGIVEL);
         if (!hasAvailables.isEmpty()) {
             hasAvailables.forEach(proposal -> {
-                AnalysisResourceRequest request = new AnalysisResourceRequest(proposal.getDocument() ,
-                        proposal.getName() ,
-                        proposal.getId().toString());
-                ResponseEntity<CardResourceResult> feignResult = feign.fetchCard(request);
-                String cardNumber = Objects.requireNonNull(feignResult.getBody()).getId();
-                proposal.setCardNumber(cardNumber);
+                CardResourceRequest
+                        request =
+                        new CardResourceRequest(proposal.getDocument() , proposal.getName() , proposal.getId().toString());
+                CardResourceResult result = feign.fetchCard(request);
+                Card card = result.toCard();
+                proposal.setCard(card);
             });
             repository.saveAll(hasAvailables);
         }

@@ -52,12 +52,11 @@ public class ProposalRegistrationController {
     @GetMapping ( "/{id}" )
     public ResponseEntity<?> readProposal ( @PathVariable Long id ) {
         Optional<Proposal> maybeProposal = repository.findById(id);
-        Optional<ResponseEntity<Proposal>> responseEntity = maybeProposal.map(ResponseEntity::ok);
-        return responseEntity.orElseGet(() -> ResponseEntity.notFound().build());
-//        if(maybeProposal.isPresent()){
-//            return ResponseEntity.ok(new ProposalResponse(maybeProposal.get()));
-//        }
-//        return ResponseEntity.notFound().build();
+        if (maybeProposal.isPresent()) {
+            Proposal proposal = maybeProposal.get();
+            return ResponseEntity.ok().body(new ProposalResponse(proposal));
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 
@@ -94,7 +93,7 @@ class ProposalResponse {
     private final String address;
     private final BigDecimal salary;
     private final String status;
-    private final String cardNumber;
+    private final String cardId;
 
     ProposalResponse ( Proposal proposal ) {
         this.proposalId = proposal.getId();
@@ -104,7 +103,8 @@ class ProposalResponse {
         this.address = proposal.getAddress();
         this.salary = proposal.getSalary();
         this.status = proposal.getStatus().toString();
-        this.cardNumber = proposal.getCardNumber();
+        this.cardId = proposal.getCard().getId();
+
     }
 
     public Long getProposalId () {
@@ -135,7 +135,7 @@ class ProposalResponse {
         return status;
     }
 
-    public String getCardNumber () {
-        return cardNumber;
+    public String getCardId () {
+        return cardId;
     }
 }
