@@ -2,7 +2,7 @@ package br.com.zup.proposal.proposal.resources.card;
 
 import javax.validation.constraints.NotBlank;
 
-class CardResourceRequest {
+public class CardResourceRequest {
 
     @NotBlank
     String documento;

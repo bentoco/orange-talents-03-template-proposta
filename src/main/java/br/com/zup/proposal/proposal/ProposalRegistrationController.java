@@ -9,7 +9,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Optional;
 
@@ -81,61 +80,5 @@ class ProposalCreated {
 
     public void setProposalId ( Long proposalId ) {
         this.proposalId = proposalId;
-    }
-}
-
-class ProposalResponse {
-
-    private final Long proposalId;
-    private final String document;
-    private final String name;
-    private final String email;
-    private final String address;
-    private final BigDecimal salary;
-    private final String status;
-    private final String cardId;
-
-    ProposalResponse ( Proposal proposal ) {
-        this.proposalId = proposal.getId();
-        this.document = proposal.getDocument();
-        this.name = proposal.getName();
-        this.email = proposal.getEmail();
-        this.address = proposal.getAddress();
-        this.salary = proposal.getSalary();
-        this.status = proposal.getStatus().toString();
-        this.cardId = proposal.getCard().getId();
-
-    }
-
-    public Long getProposalId () {
-        return proposalId;
-    }
-
-    public String getDocument () {
-        return document;
-    }
-
-    public String getName () {
-        return name;
-    }
-
-    public String getEmail () {
-        return email;
-    }
-
-    public String getAddress () {
-        return address;
-    }
-
-    public BigDecimal getSalary () {
-        return salary;
-    }
-
-    public String getStatus () {
-        return status;
-    }
-
-    public String getCardId () {
-        return cardId;
     }
 }

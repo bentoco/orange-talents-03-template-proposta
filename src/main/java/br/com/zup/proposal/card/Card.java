@@ -1,10 +1,11 @@
 package br.com.zup.proposal.card;
 
+import br.com.zup.proposal.card.biometry.Biometry;
+import br.com.zup.proposal.card.locks.Lock;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table ( name = "card" )
@@ -18,8 +19,11 @@ public class Card {
     @Column ( nullable = false, unique = true, updatable = false )
     private String cardNumber;
 
-    @OneToMany ( mappedBy = "card", cascade = CascadeType.ALL)
-    private Set<Biometry> biometries = new HashSet<>();
+    @OneToMany ( mappedBy = "card", cascade = CascadeType.ALL )
+    private List<Biometry> biometries = new ArrayList<>();
+
+    @OneToMany ( mappedBy = "card", cascade = CascadeType.ALL )
+    private List<Lock> locks = new ArrayList<>();
 
     @Deprecated
     public Card () {
@@ -37,12 +41,21 @@ public class Card {
         return cardNumber;
     }
 
-    public Set<Biometry> getBiometries () {
+    public List<Biometry> getBiometries () {
         return biometries;
     }
 
-    public void addBiometry( Biometry biometry){
+    public List<Lock> locks () {
+        return locks;
+    }
+
+    public void addBiometry ( Biometry biometry ) {
         biometry.setCard(this);
         biometries.add(biometry);
+    }
+
+    public void addLock ( Lock lock ) {
+        lock.setCard(this);
+        locks.add(lock);
     }
 }

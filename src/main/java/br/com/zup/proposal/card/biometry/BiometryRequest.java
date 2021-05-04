@@ -1,4 +1,4 @@
-package br.com.zup.proposal.card;
+package br.com.zup.proposal.card.biometry;
 
 import br.com.zup.proposal.config.validators.MustBeBase64;
 import br.com.zup.proposal.config.validators.MustBeUnique;

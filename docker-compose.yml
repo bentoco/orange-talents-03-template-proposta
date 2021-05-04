@@ -135,30 +135,31 @@ services:
       VAULT_DEV_ROOT_TOKEN_ID: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
-      
+
   mysql:
-    image: 'bentoco/mysql:proposal'
+    image: bentoco/mysql:proposal
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: proposal
+      MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: proposal
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
-#
+
 #  proposal:
 #    build: ./
 #    image: 'bentoco/proposal'
 #    ports:
 #      - 8080:8080
 #    depends_on:
-#      - mysql
+#      - db
 #    environment:
 #      PROPOSAL_DB_URL: jdbc:mysql://mysql:3306/proposal?allowPublicKeyRetrieval=true&useSSL=false
 #      PROPOSAL_DB_USERNAME: admin
 #      PROPOSAL_DB_PASSWORD: admin
 #      HOST_ANALYSIS_RESOURCES: http://analise:9999/api/solicitacao
 #      HOST_CARD_RESOURCES: http://contas:8888/api/cartoes
+#      SECURITY_AUTH_URI: http://keycloak:18080/auth/realms/proposal
 
 volumes:
   grafana-volume:

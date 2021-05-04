@@ -26,7 +26,7 @@ public class CardResourceSchedule {
     }
 
     /**
-     * 15 minutes
+     * 10 minutes
      */
     @Scheduled ( fixedDelay = 600000 ) //
     @Transactional

@@ -24,10 +24,9 @@ public class AnalysisResource {
             AnalysisResourceRequest
                     analysisRequest =
                     new AnalysisResourceRequest(proposal.getDocument() , proposal.getName() , proposal.getId().toString());
-                    return feign.proposalAnalysis(analysisRequest).getBody();
-        } catch (FeignException e) {
-            logger.error("something wrong has happened " , e);
+            return feign.proposalAnalysis(analysisRequest).getBody();
+        } catch (FeignException.UnprocessableEntity e) {
+            return new AnalysisResourceResult(proposal.getDocument() , proposal.getName() , "COM_RESTRICAO" , proposal.getId().toString());
         }
-        return null;
     }
 }

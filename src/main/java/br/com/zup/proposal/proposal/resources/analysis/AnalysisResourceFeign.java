@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient ( value = "analysis-resource", url = "${host.analysis-resources}" )
-interface AnalysisResourceFeign {
+public interface AnalysisResourceFeign {
 
-    @PostMapping
+    @PostMapping()
     ResponseEntity<AnalysisResourceResult> proposalAnalysis ( AnalysisResourceRequest request );
 }
 
