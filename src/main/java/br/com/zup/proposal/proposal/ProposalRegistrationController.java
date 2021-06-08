@@ -1,7 +1,7 @@
 package br.com.zup.proposal.proposal;
 
-import br.com.zup.proposal.proposal.resources.analysis.AnalysisResource;
-import br.com.zup.proposal.proposal.resources.analysis.AnalysisResourceResult;
+import br.com.zup.proposal.resources.analysis.AnalysisResource;
+import br.com.zup.proposal.resources.analysis.AnalysisResourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

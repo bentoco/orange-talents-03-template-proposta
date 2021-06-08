@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.resources.analysis;
+package br.com.zup.proposal.resources.analysis;
 
 import br.com.zup.proposal.proposal.*;
 import feign.FeignException;

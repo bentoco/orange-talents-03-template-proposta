@@ -1,8 +1,8 @@
-package br.com.zup.proposal.proposal.resources.card;
+package br.com.zup.proposal.resources.analysis;
 
 import javax.validation.constraints.NotBlank;
 
-public class CardResourceRequest {
+public class AnalysisResourceRequest {
 
     @NotBlank
     String documento;
@@ -13,7 +13,7 @@ public class CardResourceRequest {
     @NotBlank
     String idProposta;
 
-    public CardResourceRequest (
+    public AnalysisResourceRequest (
             @NotBlank String documento ,
             @NotBlank String nome , @NotBlank String idProposta ) {
         this.documento = documento;
@@ -33,5 +33,3 @@ public class CardResourceRequest {
         return idProposta;
     }
 }
-
-

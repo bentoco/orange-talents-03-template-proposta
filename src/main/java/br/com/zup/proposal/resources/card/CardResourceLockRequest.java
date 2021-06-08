@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.resources.card;
+package br.com.zup.proposal.resources.card;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;

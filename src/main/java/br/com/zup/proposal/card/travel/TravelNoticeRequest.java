@@ -33,6 +33,14 @@ public class TravelNoticeRequest {
         this.travelEndTime = travelEndTime;
     }
 
+    public LocalDate getTravelEndTime() {
+        return travelEndTime;
+    }
+
+    public String getDestiny() {
+        return destiny;
+    }
+
     public TravelNotice toTravel(Card card, String ipClient, String userAgent) {
         return new TravelNotice(card, destiny, travelEndTime, ipClient, userAgent);
     }

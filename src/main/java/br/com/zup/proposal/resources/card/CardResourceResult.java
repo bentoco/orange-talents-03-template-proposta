@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.resources.card;
+package br.com.zup.proposal.resources.card;
 
 import br.com.zup.proposal.card.Card;
 import com.fasterxml.jackson.annotation.JsonCreator;

@@ -5,8 +5,9 @@ import br.com.zup.proposal.card.biometry.BiometryRequest;
 import br.com.zup.proposal.card.locks.Lock;
 import br.com.zup.proposal.card.travel.TravelNotice;
 import br.com.zup.proposal.card.travel.TravelNoticeRequest;
-import br.com.zup.proposal.proposal.resources.card.CardResourceFeign;
-import br.com.zup.proposal.proposal.resources.card.CardResourceLockRequest;
+import br.com.zup.proposal.resources.card.CardResourceFeign;
+import br.com.zup.proposal.resources.card.CardResourceLockRequest;
+import br.com.zup.proposal.resources.card.CardResourceNoticeRequest;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -88,12 +89,20 @@ public class CardController {
 
         Optional<Card> hasCard = repository.findByCardNumber(cardNumber);
         if (hasCard.isPresent()) {
-            Card card = hasCard.get();
-            TravelNotice travelNotice = request.toTravel(card, ipClient, userAgent);
-            card.addTravelNotice(travelNotice);
-            repository.save(card);
+            try {
+                var feignRequest = new CardResourceNoticeRequest(request.getDestiny(), request.getTravelEndTime());
+                feign.notices(cardNumber, feignRequest);
 
-            return ResponseEntity.ok().build();
+                Card card = hasCard.get();
+                TravelNotice travelNotice = request.toTravel(card, ipClient, userAgent);
+                card.addTravelNotice(travelNotice);
+                repository.save(card);
+
+                return ResponseEntity.ok().build();
+            } catch (FeignException e) {
+                e.printStackTrace();
+                return ResponseEntity.unprocessableEntity().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }

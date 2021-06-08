@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.resources.analysis;
+package br.com.zup.proposal.resources.analysis;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

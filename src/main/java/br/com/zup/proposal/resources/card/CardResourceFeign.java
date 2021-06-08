@@ -1,4 +1,4 @@
-package br.com.zup.proposal.proposal.resources.card;
+package br.com.zup.proposal.resources.card;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -14,4 +14,8 @@ public interface CardResourceFeign {
 
     @PostMapping("/{id}/bloqueios")
     ResponseEntity<Void> lockCard(@PathVariable String id, @RequestBody CardResourceLockRequest request);
+
+    @PostMapping("/{id}/avisos")
+    ResponseEntity<Void> notices(@PathVariable String id, @RequestBody CardResourceNoticeRequest request);
+
 }
