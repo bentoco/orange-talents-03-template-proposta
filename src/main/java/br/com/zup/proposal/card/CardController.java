@@ -4,7 +4,8 @@ import br.com.zup.proposal.card.biometry.Biometry;
 import br.com.zup.proposal.card.biometry.BiometryRequest;
 import br.com.zup.proposal.card.locks.Lock;
 import br.com.zup.proposal.proposal.resources.card.CardResourceFeign;
-import feign.Response;
+import br.com.zup.proposal.proposal.resources.card.CardResourceLockRequest;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,26 +18,26 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ( "/api/card" )
+@RequestMapping("/api/card")
 public class CardController {
 
     @Autowired
     private final CardRepository repository;
     private final CardResourceFeign feign;
 
-    public CardController ( CardRepository repository , CardResourceFeign feign ) {
+    public CardController(CardRepository repository, CardResourceFeign feign) {
         this.repository = repository;
         this.feign = feign;
     }
 
-    @PostMapping ( "/{cardId}" )
+    @PostMapping("/{cardId}")
     @Transactional
-    public ResponseEntity<?> registerBiometries (
-            @PathVariable String cardId ,
-            @RequestBody @Valid BiometryRequest request ,
-            UriComponentsBuilder builder ) {
+    public ResponseEntity<?> registerBiometries(
+            @PathVariable String cardId,
+            @RequestBody @Valid BiometryRequest request,
+            UriComponentsBuilder builder) {
 
-        Optional<Card> hasCard = repository.findById(cardId);
+        Optional<Card> hasCard = repository.findByCardNumber(cardId);
         if (hasCard.isPresent()) {
             Card card = hasCard.get();
             Biometry biometry = request.toBiometric();
@@ -49,29 +50,31 @@ public class CardController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping ( "/{cardNumber}/lock" )
+    @PostMapping("/{cardNumber}/lock")
     @Transactional
-    public ResponseEntity<Void> lockCard ( @PathVariable String cardNumber , HttpServletRequest request ) {
+    public ResponseEntity<Void> lockCard(@PathVariable String cardNumber, HttpServletRequest request) {
 
         String userAgent = request.getHeader("User-Agent");
         String ipClient = request.getRemoteAddr();
 
         Optional<Card> hasCard = repository.findByCardNumber(cardNumber);
         if (hasCard.isPresent()) {
-            Response response = feign.lockCard(cardNumber);
-            if (response.status() == 200) {
+            try {
+                feign.lockCard(cardNumber, new CardResourceLockRequest());
                 Card card = hasCard.get();
-                Lock lock = new Lock(card , userAgent , ipClient);
+                Lock lock = new Lock(card, userAgent, ipClient);
                 card.addLock(lock);
                 repository.save(card);
-
-                return ResponseEntity.ok().build();
-            } else if (response.status() == 422) {
-                return ResponseEntity.unprocessableEntity().build();
+            } catch (FeignException e) {
+                if (e.status() == 400) {
+                    return ResponseEntity.badRequest().build();
+                }
+                if (e.status() == 422) {
+                    return ResponseEntity.unprocessableEntity().build();
+                }
             }
         }
         return ResponseEntity.notFound().build();
-
     }
 }
 

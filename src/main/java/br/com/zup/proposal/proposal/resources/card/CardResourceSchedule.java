@@ -26,9 +26,9 @@ public class CardResourceSchedule {
     }
 
     /**
-     * 10 minutes
+     * fixedDelay: 15 seconds
      */
-    @Scheduled ( fixedDelay = 600000 ) //
+    @Scheduled ( fixedDelay = 15000 ) //
     @Transactional
     public void associateCardToProposal () {
         List<Proposal> hasAvailables = repository.findAllByCardIdIsNullAndStatusEquals(ProposalState.ELEGIVEL);
