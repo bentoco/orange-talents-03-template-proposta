@@ -3,6 +3,8 @@ package br.com.zup.proposal.card;
 import br.com.zup.proposal.card.biometry.Biometry;
 import br.com.zup.proposal.card.biometry.BiometryRequest;
 import br.com.zup.proposal.card.locks.Lock;
+import br.com.zup.proposal.card.travel.TravelNotice;
+import br.com.zup.proposal.card.travel.TravelNoticeRequest;
 import br.com.zup.proposal.proposal.resources.card.CardResourceFeign;
 import br.com.zup.proposal.proposal.resources.card.CardResourceLockRequest;
 import feign.FeignException;
@@ -73,6 +75,25 @@ public class CardController {
                     return ResponseEntity.unprocessableEntity().build();
                 }
             }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{cardNumber}/travel-notice")
+    @Transactional
+    public ResponseEntity<?> travelNotice(@PathVariable String cardNumber, @RequestBody @Valid TravelNoticeRequest request, HttpServletRequest httpServletRequest) {
+
+        String userAgent = httpServletRequest.getHeader("User-Agent");
+        String ipClient = httpServletRequest.getRemoteAddr();
+
+        Optional<Card> hasCard = repository.findByCardNumber(cardNumber);
+        if (hasCard.isPresent()) {
+            Card card = hasCard.get();
+            TravelNotice travelNotice = request.toTravel(card, ipClient, userAgent);
+            card.addTravelNotice(travelNotice);
+            repository.save(card);
+
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
