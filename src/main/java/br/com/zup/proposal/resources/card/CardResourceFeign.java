@@ -18,4 +18,6 @@ public interface CardResourceFeign {
     @PostMapping("/{id}/avisos")
     ResponseEntity<Void> notices(@PathVariable String id, @RequestBody CardResourceNoticeRequest request);
 
+    @PostMapping("/{id}/carteiras")
+    ResponseEntity<Void> wallets(@PathVariable String id, @RequestBody CardResourceWalletRequest request);
 }

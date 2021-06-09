@@ -3,6 +3,7 @@ package br.com.zup.proposal.card;
 import br.com.zup.proposal.card.biometry.Biometry;
 import br.com.zup.proposal.card.locks.Lock;
 import br.com.zup.proposal.card.travel.TravelNotice;
+import br.com.zup.proposal.card.wallet.DigitalWallet;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class Card {
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<TravelNotice> travelNotices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    private List<DigitalWallet> digitalWallets = new ArrayList<>();
 
     @Deprecated
     public Card() {
@@ -57,6 +61,10 @@ public class Card {
         return travelNotices;
     }
 
+    public List<DigitalWallet> getDigitalWallets() {
+        return digitalWallets;
+    }
+
     public void addTravelNotice(TravelNotice travelNotice) {
         travelNotice.setCard(this);
         travelNotices.add(travelNotice);
@@ -70,5 +78,10 @@ public class Card {
     public void addLock(Lock lock) {
         lock.setCard(this);
         locks.add(lock);
+    }
+
+    public void addDigitalWallet(DigitalWallet digitalWallet) {
+        digitalWallet.setCard(this);
+        digitalWallets.add(digitalWallet);
     }
 }

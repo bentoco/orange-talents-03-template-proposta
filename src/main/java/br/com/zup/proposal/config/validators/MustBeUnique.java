@@ -20,7 +20,7 @@ public @interface MustBeUnique {
 
     Class<? extends Payload>[] payload () default {};
 
-    Class<?> klazz ();
+    Class<?> klazz();
 
-    String field ();
+    String field();
 }

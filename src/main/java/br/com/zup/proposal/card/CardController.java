@@ -5,9 +5,12 @@ import br.com.zup.proposal.card.biometry.BiometryRequest;
 import br.com.zup.proposal.card.locks.Lock;
 import br.com.zup.proposal.card.travel.TravelNotice;
 import br.com.zup.proposal.card.travel.TravelNoticeRequest;
+import br.com.zup.proposal.card.wallet.DigitalWallet;
+import br.com.zup.proposal.card.wallet.DigitalWalletRequest;
 import br.com.zup.proposal.resources.card.CardResourceFeign;
 import br.com.zup.proposal.resources.card.CardResourceLockRequest;
 import br.com.zup.proposal.resources.card.CardResourceNoticeRequest;
+import br.com.zup.proposal.resources.card.CardResourceWalletRequest;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -96,6 +99,30 @@ public class CardController {
                 Card card = hasCard.get();
                 TravelNotice travelNotice = request.toTravel(card, ipClient, userAgent);
                 card.addTravelNotice(travelNotice);
+                repository.save(card);
+
+                return ResponseEntity.ok().build();
+            } catch (FeignException e) {
+                e.printStackTrace();
+                return ResponseEntity.unprocessableEntity().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{cardNumber}/wallet")
+    @Transactional
+    public ResponseEntity<?> associateDigitalWallet(@PathVariable String cardNumber, @RequestBody @Valid DigitalWalletRequest request) {
+        Optional<Card> hasCard = repository.findByCardNumber(cardNumber);
+        if (hasCard.isPresent()) {
+            try {
+                Card card = hasCard.get();
+
+                var feignRequest = new CardResourceWalletRequest(request.getEmail(), request.getWallet().toString());
+                feign.wallets(cardNumber, feignRequest);
+
+                DigitalWallet digitalWallet = request.toDigitalWallet(card);
+                card.addDigitalWallet(digitalWallet);
                 repository.save(card);
 
                 return ResponseEntity.ok().build();
