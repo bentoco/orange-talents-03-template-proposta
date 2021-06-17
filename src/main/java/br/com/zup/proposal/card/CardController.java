@@ -117,7 +117,6 @@ public class CardController {
         if (hasCard.isPresent()) {
             try {
                 Card card = hasCard.get();
-
                 var feignRequest = new CardResourceWalletRequest(request.getEmail(), request.getWallet().toString());
                 feign.wallets(cardNumber, feignRequest);
 

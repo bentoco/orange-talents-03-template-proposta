@@ -4,17 +4,22 @@ import br.com.zup.proposal.resources.analysis.AnalysisResource;
 import br.com.zup.proposal.resources.analysis.AnalysisResourceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.SecureRandom;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/proposal")
 public class ProposalRegistrationController {
+
+    private static final String secret = "bcrypt.password-encoder";
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(8, SecureRandom.getInstance() );
 
     @Autowired
     private final ProposalRepository repository;

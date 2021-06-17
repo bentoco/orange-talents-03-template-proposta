@@ -1,6 +1,8 @@
 package br.com.zup.proposal.proposal;
 
 import br.com.zup.proposal.card.Card;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import static javax.persistence.GenerationType.*;
 @Entity
 @Table ( name = "proposal" )
 public class Proposal {
+
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 
     @Id
     @GeneratedValue ( strategy = IDENTITY )
@@ -44,7 +48,7 @@ public class Proposal {
     }
 
     public Proposal ( String document , String name , String email , String address , BigDecimal salary ) {
-        this.document = document;
+        this.document = encoder.encode(document);
         this.name = name;
         this.email = email;
         this.address = address;
@@ -92,4 +96,9 @@ public class Proposal {
     public void setCard ( Card card ) {
         this.card = card;
     }
+
+    public static String encode(String rawData){
+        return encoder.encode(rawData);
+    }
+
 }
